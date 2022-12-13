@@ -10,29 +10,13 @@
                     "coverImage": {
                         "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86371-1LGa9177XA0O.jpg"
                     },
-                    "description": "One day, Daichi Katsuragi and his classmates suddenly found themselves in a Parallel world. The god who transferred them to this world shared his power, and told Daichi and others that they were heroes and he wanted them to defeat the demon king. But only Daichi didn\u2019t get any power. As expected, useless Daichi is used as a decoy and abandoned in the monsters den.\n",
                     "genres": [
                         "Action",
                         "Adventure",
                         "Ecchi",
                         "Fantasy",
                         "Romance"
-                    ],
-                    "startDate": {
-                        "year": 2017,
-                        "month": 11,
-                        "day": 30
-                    },
-                    "endDate": {
-                        "year": null,
-                        "month": null,
-                        "day": null
-                    },
-                    "chapters": null,
-                    "volumes": null,
-                    "status": "RELEASING",
-                    "format": "NOVEL",
-                    "siteUrl": "https://anilist.co/manga/86371"
+                    ]
                 }
             ]
         }
