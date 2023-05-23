@@ -1,57 +1,52 @@
-import pandas as pd
-import json
 import requests
 
-#anilist api url
-url = "https://graphql.anilist.co"
+# Get user input for the name
+name = input("Enter the name of the anime or manga: ")
 
-#query to random manga from anilist that is romance, action and made after 2010
-query = """
-query ($page: Int , $genre_in: [String] ,$startDate_greater: FuzzyDateInt, $sort: MediaSort , $popularity: Int) {
-    Page (page: $page, perPage: 1) {
-        media (genre_in: $genre_in,startDate_greater :$startDate_greater,sort:$sort, popularity :$popularity ,type: MANGA) {
-            id
-            title {
-                english
-                romaji
-            }
-            genres
-        }
+# Here we define our query as a multi-line string
+query = '''
+query ($search: String) {
+  Media (search: $search, type: ANIME, isAdult: false) {
+    id
+    title {
+      romaji
+      english
+      native
     }
+  }
 }
-"""
+'''
 
-# First, get the user input and split it into a list of genres
-def UserInput():
-    genre_string = input("Enter a list of genres, separated by commas: ")
-    genre_list = genre_string.split(",")
-    
-    # Next, make each genre have a capital first letter
-    capitalized_genre_list = []
-    for genre in genre_list:
-        capitalized_genre = genre[0].upper() + genre[1:]    
-        capitalized_genre_list.append(capitalized_genre)
-    # Validate the entered genres
-    # You can use the AniList API to get the list of available genres
-    # and check if the entered genres exist in that list
-    
-    return capitalized_genre_list
-
-
-# Get the list of genres entered by the user
-List = ["Romance", "Action", "Comedy"]
+# Define our query variables and values that will be used in the query request
 variables = {
-    "page": 1, 
-    "genre_in": List ,
-    "sort": "popularity",
-    "startDate_greater":  20160000,
-    "type": "MANGA"
+    'search': name
 }
 
-# Make the request to the AniList API
+url = 'https://graphql.anilist.co'
+
+# Make the HTTP API request
 response = requests.post(url, json={'query': query, 'variables': variables})
 
-# Parse the response text as JSON
-response_json = response.json()
+# Check if the request was successful
+if response.status_code == 200:
+    data = response.json()
 
-print (response_json)
+    # Extract the anime and manga data from the response
+    media_list = data['data']['Media']
+
+    # Check if there are any results
+    if media_list:
+        print("Matching anime and manga:")
+        title = media_list['title']
+        romaji = title['romaji']
+        english = title['english']
+        native = title['native']
+        print("- Romaji: " + romaji)
+        if english:
+            print("  English: " + english)
+        if native:
+            print("  Native: " + native)
+    else:
+        print("No matching anime or manga found.")
+else:
+    print("Error occurred:", response.text)
